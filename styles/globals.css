@@ -1,0 +1,34 @@
+/* WAME color palette applied as CSS variables
+	 Palette from provided image:
+	 - dark:   #292929
+	 - green:  #A5BF13
+	 - white:  #F0F0F0
+	 - teal:   #62929E
+*/
+
+:root{
+	--wame-dark: #292929;
+	--wame-accent: #A5BF13;
+	--wame-bg: #F0F0F0;
+	--wame-teal: #62929E;
+	--wame-text: #292929;
+	--wame-muted: #6b6b6b;
+}
+
+html,body,#__next{height:100%}
+body{margin:0;background:var(--wame-bg);color:var(--wame-text);font-family:system-ui,Segoe UI, Roboto, Arial, sans-serif}
+
+/* layout helpers */
+.container{max-width:960px;margin:0 auto;padding:2rem}
+
+.hero{display:flex;flex-direction:column;align-items:center;padding:4rem 1rem;border-radius:12px}
+.hero h1{color:var(--wame-dark);margin:0 0 0.5rem}
+.hero p{color:var(--wame-muted);margin:0 0 1rem}
+
+.swatches{display:flex;gap:0.75rem;margin-top:1.25rem}
+.swatch{width:64px;height:96px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px;color:#fff;font-weight:600}
+.swatch .hex{font-size:12px;background:rgba(0,0,0,0.18);padding:2px 6px;border-radius:6px}
+
+.accent-button{background:var(--wame-accent);color:var(--wame-dark);border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+.teal-button{background:var(--wame-teal);color:#fff;border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+
