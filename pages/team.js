@@ -3,12 +3,12 @@ import Layout from '../components/Layout'
 export default function Team() {
   return (
     <Layout>
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '3rem 2rem', fontFamily: 'Inter, sans-serif', color: 'var(--wame-text)' }}>
-        <h1 style={{ fontSize: 36, marginBottom: 12, color: 'var(--wame-dark)', fontFamily: 'Poppins, sans-serif' }}>
-          Meet the team
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 2rem', fontFamily: 'Inter, sans-serif', color: 'var(--wame-text)' }}>
+        <h1 style={{ fontSize: 42, marginBottom: 16, color: 'var(--wame-dark)', fontFamily: 'Poppins, sans-serif' }}>
+          Meet Our Team
         </h1>
-        <p style={{ fontSize: 18, color: 'var(--wame-muted)', lineHeight: 1.7 }}>
-          We're a small, dedicated team of developers and sports enthusiasts building tools that help organizers run better events.
+        <p style={{ fontSize: 20, color: 'var(--wame-muted)', lineHeight: 1.8, marginBottom: 48 }}>
+          Meet our family that strives to spread Ultimate Frisbee and empower youth through sports education.
         </p>
 
         <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24 }}>
