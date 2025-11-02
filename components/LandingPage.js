@@ -68,14 +68,14 @@ export default function LandingPage() {
           {/* SVG Circular Diagram */}
           <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
             {/* Volunteer - Blue section (top, exactly 120 degrees) */}
-            <g 
+            <g
               onClick={() => router.push('/volunteer')}
               onMouseEnter={() => setHoveredSection('volunteer')}
               onMouseLeave={() => setHoveredSection(null)}
               style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
             >
-              <path 
-                d="M 100,100 L 169.28,60 A 80,80 0 1,0 30.72,60 L 100,100 Z" 
+              <path
+                d="M 100,100 L 169.28,60 A 80,80 0 1,0 30.72,60 L 100,100 Z"
                 fill="#62929E"
                 style={{
                   transform: hoveredSection === 'volunteer' ? 'scale(1.08)' : hoveredSection && hoveredSection !== 'volunteer' ? 'scale(0.96)' : 'scale(1)',
@@ -84,12 +84,12 @@ export default function LandingPage() {
                   filter: hoveredSection === 'volunteer' ? 'brightness(1.15)' : 'brightness(1)'
                 }}
               />
-              <text 
-                x="100" 
-                y="45" 
-                fill="#fff" 
-                fontSize="16" 
-                fontWeight="700" 
+              <text
+                x="100"
+                y="45"
+                fill="#fff"
+                fontSize="16"
+                fontWeight="700"
                 fontFamily="Poppins, sans-serif"
                 textAnchor="middle"
                 style={{
@@ -100,16 +100,16 @@ export default function LandingPage() {
                 Volunteer
               </text>
             </g>
-            
+
             {/* Student - Green section (bottom-right, exactly 120 degrees) */}
-            <g 
+            <g
               onClick={() => router.push('/student/login')}
               onMouseEnter={() => setHoveredSection('student')}
               onMouseLeave={() => setHoveredSection(null)}
               style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
             >
-              <path 
-                d="M 100,100 L 169.28,140 A 80,80 0 0,0 169.28,60 L 100,100 Z" 
+              <path
+                d="M 100,100 L 169.28,140 A 80,80 0 0,0 169.28,60 L 100,100 Z"
                 fill="#A5BF13"
                 style={{
                   transform: hoveredSection === 'student' ? 'scale(1.08)' : hoveredSection && hoveredSection !== 'student' ? 'scale(0.96)' : 'scale(1)',
@@ -118,12 +118,12 @@ export default function LandingPage() {
                   filter: hoveredSection === 'student' ? 'brightness(1.15)' : 'brightness(1)'
                 }}
               />
-              <text 
-                x="155" 
-                y="105" 
-                fill="#fff" 
-                fontSize="16" 
-                fontWeight="700" 
+              <text
+                x="155"
+                y="105"
+                fill="#fff"
+                fontSize="16"
+                fontWeight="700"
                 fontFamily="Poppins, sans-serif"
                 textAnchor="middle"
                 style={{
@@ -134,16 +134,16 @@ export default function LandingPage() {
                 Student
               </text>
             </g>
-            
+
             {/* Coach - Red section (bottom-left, exactly 120 degrees) */}
-            <g 
+            <g
               onClick={() => router.push('/coach')}
               onMouseEnter={() => setHoveredSection('coach')}
               onMouseLeave={() => setHoveredSection(null)}
               style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
             >
-              <path 
-                d="M 100,100 L 30.72,60 A 80,80 0 0,0 169.28,140 L 100,100 Z" 
+              <path
+                d="M 100,100 L 30.72,60 A 80,80 0 0,0 169.28,140 L 100,100 Z"
                 fill="#EF4444"
                 style={{
                   transform: hoveredSection === 'coach' ? 'scale(1.08)' : hoveredSection && hoveredSection !== 'coach' ? 'scale(0.96)' : 'scale(1)',
@@ -152,12 +152,12 @@ export default function LandingPage() {
                   filter: hoveredSection === 'coach' ? 'brightness(1.15)' : 'brightness(1)'
                 }}
               />
-              <text 
-                x="55" 
-                y="160" 
-                fill="#fff" 
-                fontSize="16" 
-                fontWeight="700" 
+              <text
+                x="55"
+                y="160"
+                fill="#fff"
+                fontSize="16"
+                fontWeight="700"
                 fontFamily="Poppins, sans-serif"
                 textAnchor="middle"
                 style={{
@@ -168,7 +168,7 @@ export default function LandingPage() {
                 Coach
               </text>
             </g>
-            
+
             {/* Center circle with Y-Ultimate icon logo */}
             <defs>
               <clipPath id="centerCircle">
@@ -176,12 +176,12 @@ export default function LandingPage() {
               </clipPath>
             </defs>
             <circle cx="100" cy="100" r="26" fill="#fff" stroke="#292929" strokeWidth="4" />
-            <image 
-              href="/yu-icon.png" 
-              x="77" 
-              y="77" 
-              width="46" 
-              height="46" 
+            <image
+              href="/yu-icon.png"
+              x="77"
+              y="77"
+              width="46"
+              height="46"
               clipPath="url(#centerCircle)"
               preserveAspectRatio="xMidYMid meet"
               style={{ pointerEvents: 'none' }}
@@ -240,6 +240,25 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* Donate Section */}
+      <div style={{ background: '#A5BF13', color: '#fff', padding: '60px 20px' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 32, fontWeight: 700, fontFamily: 'Poppins, sans-serif', marginBottom: 16 }}>
+            Support Our Mission
+          </h2>
+          <p style={{ fontSize: 18, color: '#f0f9e8', fontFamily: 'Inter, sans-serif', marginBottom: 32 }}>
+            Your donation helps underprivileged children discover the joy of Ultimate Frisbee and build healthier futures.
+          </p>
+          <Link href="/donate">
+            <button style={{ padding: '16px 32px', fontSize: 18, fontWeight: 600, color: '#A5BF13', background: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontFamily: 'Poppins, sans-serif', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'all 0.3s' }}
+              onMouseOver={(e) => e.target.style.background = '#f0f9e8'}
+              onMouseOut={(e) => e.target.style.background = '#fff'}>
+              Donate Now 💝
+            </button>
+          </Link>
+        </div>
+      </div>
+
       {/* Newsletter Section */}
       <div style={{ background: '#292929', color: '#fff', padding: '60px 20px' }}>
         <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
@@ -271,6 +290,7 @@ export default function LandingPage() {
                 <Link href="/" style={{ color: '#ccc', textDecoration: 'none', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>Home</Link>
                 <Link href="/team" style={{ color: '#ccc', textDecoration: 'none', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>Meet The Team</Link>
                 <Link href="/about" style={{ color: '#ccc', textDecoration: 'none', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>Impact Stories</Link>
+                <Link href="/donate" style={{ color: '#ccc', textDecoration: 'none', fontSize: 14, fontFamily: 'Inter, sans-serif' }}>Donate</Link>
               </div>
             </div>
             <div>
