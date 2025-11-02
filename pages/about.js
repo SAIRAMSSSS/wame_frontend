@@ -1,9 +1,22 @@
-import Layout from '../components/Layout'
+import Head from 'next/head';
+import Navigation from '../components/Navigation';
 
 export default function About() {
   return (
-    <Layout>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 2rem', fontFamily: 'Inter, sans-serif', color: 'var(--wame-text)' }}>
+    <>
+      <Head>
+        <title>About Us - Y-Ultimate</title>
+      </Head>
+
+      <div style={{ minHeight: '100vh', background: '#f5f7fa' }}>
+        {/* Header with Navigation */}
+        <header style={{ background: '#fff', padding: '20px 32px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+          <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+            <Navigation />
+          </div>
+        </header>
+
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 2rem', fontFamily: 'Inter, sans-serif', color: 'var(--wame-text)' }}>
         <h1 style={{ fontSize: 42, marginBottom: 16, color: 'var(--wame-dark)', fontFamily: 'Poppins, sans-serif' }}>
           About Y-Ultimate
         </h1>
@@ -138,6 +151,7 @@ export default function About() {
           </div>
         </div>
       </div>
-    </Layout>
+      </div>
+    </>
   )
 }

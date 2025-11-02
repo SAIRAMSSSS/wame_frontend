@@ -137,7 +137,7 @@ export default function LandingPage() {
             
             {/* Coach - Red section (bottom-left, exactly 120 degrees) */}
             <g 
-              onClick={() => router.push('/coach')}
+              onClick={() => router.push('/coach/login')}
               onMouseEnter={() => setHoveredSection('coach')}
               onMouseLeave={() => setHoveredSection(null)}
               style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
