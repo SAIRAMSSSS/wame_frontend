@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import SimpleLineChart from '../../components/SimpleLineChart';
+import ProfileEditModal from '../../components/ProfileEditModal';
 
 export default function StudentHome() {
   const router = useRouter();
@@ -14,6 +15,10 @@ export default function StudentHome() {
   const [googleFitConnected, setGoogleFitConnected] = useState(false);
   const [isGoogleOAuthUser, setIsGoogleOAuthUser] = useState(false); // Track if user logged in via Google OAuth
   const [syncing, setSyncing] = useState(false);
+  const [profileCompleted, setProfileCompleted] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   useEffect(() => {
     // Check for token in URL query parameters first (from Google OAuth redirect)
@@ -49,6 +54,9 @@ export default function StudentHome() {
       fetchUserData(token);
     } else if (userData) {
       setUser(JSON.parse(userData));
+      setProfileData(JSON.parse(userData));
+      // Check profile completion for existing users
+      checkProfileCompletion(token);
     }
     
     // Check if Google Fit was previously connected
@@ -74,25 +82,74 @@ export default function StudentHome() {
   const fetchUserData = async (token) => {
     try {
       // Fetch user profile data
-      const response = await fetch('http://127.0.0.1:8000/api/profiles/', {
+      const response = await fetch('http://127.0.0.1:8000/api/profiles/me/', {
         headers: { 'Authorization': `Token ${token}` }
       });
       
       if (response.ok) {
-        const profiles = await response.json();
-        if (profiles && profiles.length > 0) {
-          const userData = {
-            username: profiles[0].user_name || 'Student',
-            email: profiles[0].email || '',
-            id: profiles[0].id
-          };
-          localStorage.setItem('user', JSON.stringify(userData));
-          setUser(userData);
-        }
+        const profile = await response.json();
+        const userData = {
+          username: profile.user?.username || profile.first_name || 'Student',
+          email: profile.user?.email || profile.email || '',
+          first_name: profile.first_name || '',
+          last_name: profile.last_name || '',
+          coach_name: profile.coach_name || '',
+          team_name: profile.team_name || '',
+          team_role: profile.team_role || '',
+          phone: profile.phone || '',
+          age: profile.age || '',
+          school: profile.school || '',
+          address: profile.address || '',
+          profile_picture_url: profile.profile_picture_url || null,
+          id: profile.id
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+        setProfileData(userData);
+        
+        // Check profile completion
+        checkProfileCompletion(token);
       }
     } catch (error) {
       console.error('Failed to fetch user data:', error);
     }
+  };
+
+  const checkProfileCompletion = async (token) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/profiles/check-completion/', {
+        headers: { 'Authorization': `Token ${token}` }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setProfileCompleted(data.profile_completed);
+      }
+    } catch (error) {
+      console.error('Failed to check profile completion:', error);
+    }
+  };
+
+  const handleProfileUpdate = (updatedProfile) => {
+    const userData = {
+      username: updatedProfile.first_name || updatedProfile.user?.username || 'Student',
+      email: updatedProfile.email || updatedProfile.user?.email || '',
+      first_name: updatedProfile.first_name || '',
+      last_name: updatedProfile.last_name || '',
+      coach_name: updatedProfile.coach_name || '',
+      team_name: updatedProfile.team_name || '',
+      team_role: updatedProfile.team_role || '',
+      phone: updatedProfile.phone || '',
+      age: updatedProfile.age || '',
+      school: updatedProfile.school || '',
+      address: updatedProfile.address || '',
+      profile_picture_url: updatedProfile.profile_picture_url || null,
+      id: updatedProfile.id
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+    setProfileData(userData);
+    setProfileCompleted(updatedProfile.profile_completed);
   };
 
   const autoSyncFitnessData = async (token) => {
@@ -226,17 +283,214 @@ export default function StudentHome() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
             <span style={{ fontSize: 14, color: 'var(--wame-muted)', fontFamily: 'Inter, sans-serif' }}>
-              Welcome, {user?.first_name}!
+              Welcome, {user?.first_name || user?.username}!
             </span>
-            <button
-              onClick={handleLogout}
-              style={{ padding: '8px 16px', fontSize: 14, fontWeight: 600, color: '#fff', background: '#EF4444', border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
-            >
-              Logout
-            </button>
+            
+            {/* Profile Picture Dropdown Button */}
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                onBlur={() => setTimeout(() => setShowProfileDropdown(false), 200)}
+                style={{ 
+                  width: 44, 
+                  height: 44, 
+                  borderRadius: '50%', 
+                  border: profileCompleted ? '2px solid #4CAF50' : '2px solid #FF9800',
+                  padding: 0,
+                  cursor: 'pointer',
+                  background: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  position: 'relative',
+                  transition: 'all 0.3s'
+                }}
+                title="Profile Menu"
+              >
+                {profileData?.profile_picture_url ? (
+                  <img 
+                    src={profileData.profile_picture_url} 
+                    alt="Profile" 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover'
+                    }} 
+                  />
+                ) : (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="4" fill="#999"/>
+                    <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" stroke="#999" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                )}
+                {!profileCompleted && (
+                  <div style={{
+                    position: 'absolute',
+                    top: -2,
+                    right: -2,
+                    width: 14,
+                    height: 14,
+                    background: '#FF9800',
+                    borderRadius: '50%',
+                    border: '2px solid #fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 10
+                  }}>
+                    ⚠
+                  </div>
+                )}
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: 8,
+                  background: '#fff',
+                  borderRadius: 12,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                  minWidth: 280,
+                  zIndex: 1000,
+                  overflow: 'hidden',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  {/* Profile Header */}
+                  <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0', background: '#f8f9fa' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: '50%',
+                        background: profileData?.profile_picture_url ? 'none' : 'linear-gradient(135deg, #667eea, #764ba2)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        border: '2px solid #fff',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                      }}>
+                        {profileData?.profile_picture_url ? (
+                          <img src={profileData.profile_picture_url} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          <span style={{ fontSize: 20, color: '#fff', fontWeight: 600 }}>
+                            {(user?.first_name || user?.username || 'U')[0].toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: '#333', marginBottom: 2 }}>
+                          {user?.first_name && user?.last_name ? `${user.first_name} ${user.last_name}` : user?.username}
+                        </div>
+                        <div style={{ fontSize: 12, color: '#666' }}>{user?.email}</div>
+                      </div>
+                    </div>
+                    {!profileCompleted && (
+                      <div style={{ 
+                        marginTop: 12, 
+                        padding: '8px 12px', 
+                        background: 'rgba(255,152,0,0.1)', 
+                        borderRadius: 6,
+                        fontSize: 12,
+                        color: '#FF9800',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6
+                      }}>
+                        <span>⚠️</span>
+                        <span style={{ fontWeight: 600 }}>Complete your profile</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Menu Items */}
+                  <div style={{ padding: '8px 0' }}>
+                    <button
+                      onClick={() => {
+                        setShowProfileDropdown(false);
+                        setShowProfileModal(true);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '12px 20px',
+                        border: 'none',
+                        background: 'none',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        fontSize: 14,
+                        color: '#333',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.target.style.background = '#f8f9fa'}
+                      onMouseLeave={(e) => e.target.style.background = 'none'}
+                    >
+                      <span style={{ fontSize: 18 }}>✏️</span>
+                      <span style={{ fontWeight: 500 }}>Edit Profile</span>
+                    </button>
+
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        width: '100%',
+                        padding: '12px 20px',
+                        border: 'none',
+                        background: 'none',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        fontSize: 14,
+                        color: '#EF4444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        transition: 'background 0.2s',
+                        borderTop: '1px solid #f0f0f0',
+                        marginTop: 4
+                      }}
+                      onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
+                      onMouseLeave={(e) => e.target.style.background = 'none'}
+                    >
+                      <span style={{ fontSize: 18 }}>🚪</span>
+                      <span style={{ fontWeight: 600 }}>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
+
+      {/* Profile Completion Warning Banner */}
+      {!profileCompleted && (
+        <div style={{ background: 'linear-gradient(135deg, #FF9800 0%, #FF5722 100%)', padding: '16px 32px', boxShadow: '0 2px 8px rgba(255,152,0,0.3)' }}>
+          <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: 24 }}>⚠️</span>
+              <div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: 0, marginBottom: 4 }}>
+                  Profile Incomplete
+                </h3>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.95)', margin: 0 }}>
+                  Please complete your profile to access all features. Add your name, email, coach name, team name, and team role.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowProfileModal(true)}
+              style={{ padding: '10px 24px', fontSize: 14, fontWeight: 600, color: '#FF9800', background: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+            >
+              Complete Profile
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '32px' }}>
@@ -244,7 +498,7 @@ export default function StudentHome() {
           {/* Left Column */}
           <div>
             {/* Google Fit Connection Banner */}
-            {!googleFitConnected && (
+            {!googleFitConnected && !isGoogleOAuthUser && (
               <div style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: 12, padding: 24, marginBottom: 24, color: '#fff', boxShadow: '0 4px 12px rgba(102,126,234,0.3)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -425,6 +679,14 @@ export default function StudentHome() {
           </div>
         </div>
       </div>
+
+      {/* Profile Edit Modal */}
+      <ProfileEditModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        userData={profileData}
+        onUpdate={handleProfileUpdate}
+      />
     </div>
   );
 }
