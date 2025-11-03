@@ -1,0 +1,430 @@
+/*
+ WAME color palette applied as CSS variables
+ - Palette from provided image:
+	 - dark:   #292929
+	 - green:  #A5BF13
+	 - white:  #F0F0F0
+	 - teal:   #62929E
+
+ Lando Norris (landonorris.com) palette added below as --ln-*
+ - ln-dark:   #151515 (dark background)
+ - ln-green:  #4e9d2a (olive drab)
+ - ln-yellow: #f7c64a (casablanca)
+ - ln-blue:   #1d7b9a (matisse)
+ - ln-orange: #e15c23 (hot cinnamon)
+ - ln-sandy:  #f4a462 (sandy brown)
+*/
+
+:root{
+		/* existing WAME vars */
+		--wame-dark: #292929;
+		--wame-accent: #A5BF13;
+		--wame-bg: #F0F0F0;
+		--wame-teal: #62929E;
+		--wame-text: #292929;
+		--wame-muted: #6b6b6b;
+
+		/* Lando Norris palette (high-contrast energetic) */
+		--ln-dark: #151515;
+		--ln-green: #4e9d2a;
+		--ln-yellow: #f7c64a;
+		--ln-blue: #1d7b9a;
+		--ln-orange: #e15c23;
+		--ln-sandy: #f4a462;
+
+		/* semantic aliases */
+		--ln-bg: var(--ln-dark);
+		--ln-primary: var(--ln-green);
+		--ln-accent: var(--ln-yellow);
+		--ln-cta: var(--ln-orange);
+		--ln-muted: rgba(255,255,255,0.85);
+}
+
+html,body,#__next{height:100%}
+body{margin:0;background:var(--wame-bg);color:var(--wame-text);font-family:system-ui,Segoe UI, Roboto, Arial, sans-serif}
+
+/* layout helpers */
+.container{max-width:960px;margin:0 auto;padding:2rem}
+
+.hero{display:flex;flex-direction:column;align-items:center;padding:4rem 1rem;border-radius:12px}
+.hero h1{color:var(--wame-dark);margin:0 0 0.5rem}
+.hero p{color:var(--wame-muted);margin:0 0 1rem}
+
+.swatches{display:flex;gap:0.75rem;margin-top:1.25rem}
+.swatch{width:64px;height:96px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px;color:#fff;font-weight:600}
+.swatch .hex{font-size:12px;background:rgba(0,0,0,0.18);padding:2px 6px;border-radius:6px}
+
+.accent-button{background:var(--wame-accent);color:var(--wame-dark);border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+.teal-button{background:var(--wame-teal);color:#fff;border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+
+/* Import friendly web fonts from Google Fonts for demos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&family=Montserrat:wght@400;700&display=swap');
+
+/* font sample styles */
+.font-samples{display:flex;flex-direction:column;gap:0.6rem;margin-top:1rem}
+.font-card{padding:12px;border-radius:8px;background:linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.01));}
+.font-card h3{margin:0 0 6px 0;color:var(--wame-accent)}
+.font-poppins{font-family:'Poppins',system-ui,Segoe UI, Roboto, Arial, sans-serif}
+.font-inter{font-family:'Inter',system-ui,Segoe UI, Roboto, Arial, sans-serif}
+.font-montserrat{font-family:'Montserrat',system-ui,Segoe UI, Roboto, Arial, sans-serif}
+.font-sample-note{font-size:13px;color:var(--wame-muted);margin-top:6px}
+
+/* ------------------------------------------------------------------
+	 LANDO NORRIS: font placeholders and utility classes
+	 - If you have the font files for "Mono Sans ExtraLight 200 Italic" or
+		 "Brier Bold" add them to /public/fonts and update the src paths below.
+	 - Alternatively use a CDN / Fontsource package and adjust names.
+ ------------------------------------------------------------------ */
+
+/* Example @font-face placeholders (provide local files or change to remote URLs) */
+@font-face {
+	font-family: 'Mono Sans ExtraLight';
+	src: local('Mono Sans ExtraLight'), url('/fonts/mono-sans-extralight-200-italic.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 200;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Brier';
+	src: local('Brier Bold'), url('/fonts/brier-bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Utility classes for the Lando Norris palette */
+.ln-bg { background-color: var(--ln-bg); color: var(--ln-muted); }
+.ln-section { background-color: var(--ln-dark); color: #fff; padding: 2rem; }
+.ln-accent { color: var(--ln-accent); }
+.ln-primary { color: var(--ln-primary); }
+.ln-cta { color: var(--ln-cta); }
+.ln-surface { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); }
+
+.btn-ln-primary{background:var(--ln-primary);color:var(--ln-dark);border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+.btn-ln-cta{background:var(--ln-cta);color:#fff;border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer}
+
+/* typography helpers */
+.ln-mono{font-family:'Mono Sans ExtraLight',system-ui,Segoe UI, Roboto, Arial, sans-serif;font-style:italic}
+.ln-display{font-family:'Brier', 'Montserrat', system-ui,Segoe UI, Roboto, Arial, sans-serif;font-weight:700}
+
+/* Example usage notes:
+	 - Add font files to /public/fonts and keep the filenames used in the @font-face src
+	 - Or replace src with a CDN/Fontsource URL and the family names accordingly
+*/
+
+/* ==================================================================
+   RESPONSIVE DESIGN - Mobile First Approach with Smooth Animations
+   ================================================================== */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* All transitions smooth by default */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Base styles - Mobile First (< 768px) */
+body {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  padding: 1rem;
+}
+
+/* Responsive Navigation */
+nav {
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  padding: 10px !important;
+}
+
+nav button {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+}
+
+/* Responsive Grid Layouts */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Responsive Tables - Horizontal Scroll */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 600px;
+}
+
+/* Card Animations */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Button Animations */
+button, .btn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+button:active, .btn:active {
+  transform: translateY(0);
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Slide In Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+/* ==================================================================
+   TABLET STYLES (768px - 1024px)
+   ================================================================== */
+@media (min-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  nav button {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* 2-column layouts for tablets */
+  .grid-2-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Hide mobile-only elements */
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* ==================================================================
+   DESKTOP STYLES (> 1024px)
+   ================================================================== */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+
+  nav {
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    padding: 12px 24px !important;
+  }
+
+  nav button {
+    padding: 10px 24px !important;
+    font-size: 15px !important;
+  }
+
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* 3-column layouts for desktop */
+  .grid-3-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* 4-column layouts for large screens */
+  .grid-4-col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Hide tablet-only elements */
+  .tablet-only {
+    display: none !important;
+  }
+}
+
+/* ==================================================================
+   LARGE DESKTOP STYLES (> 1440px)
+   ================================================================== */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==================================================================
+   MOBILE SPECIFIC IMPROVEMENTS
+   ================================================================== */
+@media (max-width: 767px) {
+  /* Stack elements vertically on mobile */
+  .flex-mobile-column {
+    flex-direction: column !important;
+  }
+
+  /* Full width buttons on mobile */
+  .btn-mobile-full {
+    width: 100% !important;
+  }
+
+  /* Reduce padding on mobile */
+  .mobile-compact {
+    padding: 0.5rem !important;
+  }
+
+  /* Larger touch targets for mobile */
+  button, .btn, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Hide desktop-only elements */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Hamburger menu helper */
+  .mobile-menu {
+    display: block !important;
+  }
+
+  /* Text sizes for mobile */
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 18px !important; }
+  h4 { font-size: 16px !important; }
+
+  /* Modal adjustments for mobile */
+  .modal-content {
+    width: 95% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Table horizontal scroll on mobile */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* ==================================================================
+   ACCESSIBILITY & PERFORMANCE
+   ================================================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 3px solid var(--wame-accent);
+  outline-offset: 2px;
+}
+
+/* Improve text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent layout shift */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+img:not([src]) {
+  opacity: 0;
+}
+
+
