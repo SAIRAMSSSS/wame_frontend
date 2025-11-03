@@ -57,7 +57,7 @@ export default function TournamentDetailPage() {
       setLoading(true);
       
       // Fetch user profile to determine role
-      const profileRes = await fetch('http://127.0.0.1:8000/api/profiles/me/', {
+      const profileRes = await fetch('http://127.0.0.1:8000/api/profile/', {
         headers: { 'Authorization': `Token ${authToken}` }
       });
       const profileData = await profileRes.json();

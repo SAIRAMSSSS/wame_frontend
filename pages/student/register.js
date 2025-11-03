@@ -32,10 +32,10 @@ export default function StudentRegister() {
       }
       // Show welcome message and redirect
       alert('Welcome to Y-Ultimate! Your Google Fit data has been synced.');
-      router.push('/student/home');
+      router.push('/student/dashboard');
     } else if (token) {
       localStorage.setItem('token', token);
-      router.push('/student/home');
+      router.push('/student/dashboard');
     }
   }, [router.query]);
 
@@ -97,7 +97,7 @@ export default function StudentRegister() {
         // Auto login after registration
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/student/home');
+        router.push('/student/dashboard');
       } else {
         setError(data.message || 'Registration failed. Please try again.');
       }

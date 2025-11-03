@@ -42,7 +42,7 @@ export default function StudentHome() {
       }
       
       // Clean up URL by removing query params
-      router.replace('/student/home', undefined, { shallow: true });
+      router.replace('/student/dashboard', undefined, { shallow: true });
     }
     
     // If no token at all, redirect to login

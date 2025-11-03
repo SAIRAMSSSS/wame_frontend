@@ -11,7 +11,7 @@ export default function Navigation() {
     const path = router.pathname;
     if (path === '/' || path === '/index') {
       setActiveTab('home');
-    } else if (path.includes('/student/home') || path.includes('/coach/dashboard')) {
+    } else if (path.includes('/student/dashboard') || path.includes('/coach/dashboard')) {
       setActiveTab('dashboard');
     } else if (path.includes('/tournament')) {
       setActiveTab('tournaments');
@@ -51,7 +51,7 @@ export default function Navigation() {
 
   // Determine dashboard path based on user role
   const getDashboardPath = () => {
-    return isCoach() ? '/coach/dashboard' : '/student/home';
+    return isCoach() ? '/coach/dashboard' : '/student/dashboard';
   };
 
   // Handle navigation with role checking
@@ -62,8 +62,8 @@ export default function Navigation() {
       return;
     }
     
-    // Check if trying to access student home with coach role
-    if (path === '/student/home' && isCoach()) {
+    // Check if trying to access student dashboard with coach role
+    if (path === '/student/dashboard' && isCoach()) {
       alert('⚠️ Access Denied: Coaches should use the Coach Dashboard.');
       return;
     }

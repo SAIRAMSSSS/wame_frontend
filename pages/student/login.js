@@ -22,7 +22,7 @@ export default function StudentLogin() {
       if (google_connected) {
         localStorage.setItem('googleFitConnected', 'true');
       }
-      router.push('/student/home');
+      router.push('/student/dashboard');
     }
     
     if (oauthError) {
@@ -72,7 +72,7 @@ export default function StudentLogin() {
         // Store token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/student/home');
+        router.push('/student/dashboard');
       } else {
         setError(data.message || 'Login failed. Please check your credentials.');
       }

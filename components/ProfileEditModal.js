@@ -112,16 +112,10 @@ export default function ProfileEditModal({ isOpen, onClose, userData, onUpdate }
       }
 
       setSuccess('Profile updated successfully!');
-      
-      // Update parent component immediately
-      onUpdate(data.profile);
-      
-      // Close modal after brief success message display
       setTimeout(() => {
-        setSuccess('');
-        setError('');
+        onUpdate(data.profile); // Update parent component
         onClose();
-      }, 1000);
+      }, 1500);
     } catch (err) {
       setError(err.message || 'An error occurred. Please try again.');
       console.error('Profile update error:', err);
