@@ -236,6 +236,109 @@ button:active, .btn:active {
 }
 
 /* ==================================================================
+   NAVIGATION - responsive header styles
+   ================================================================== */
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+.site-header .header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--wame-dark);
+  font-weight: 700;
+  font-size: 20px;
+}
+.site-brand img { width: 44px; height:44px; border-radius:8px; object-fit:cover }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.nav-links a {
+  color: var(--wame-dark);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.nav-links a:hover, .nav-links a:focus {
+  background: rgba(165,191,19,0.08);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+.nav-toggle:focus { box-shadow: 0 0 0 3px rgba(165,191,19,0.18); }
+
+/* Mobile: hide desktop links and show toggle */
+.nav-links.mobile-hidden { display: none; }
+.nav-links.open {
+  position: absolute;
+  top: 68px;
+  right: 12px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+/* Desktop: always show links and hide toggle */
+@media (min-width: 768px) {
+  .nav-toggle { display: none; }
+  .nav-links.mobile-hidden { display: flex; position: static; box-shadow: none; background: transparent; padding: 0; }
+  .nav-links.open { position: static; flex-direction: row; background: transparent; padding: 0; box-shadow:none }
+}
+
+/* "More" dropdown styling */
+.more-menu { position: relative; }
+.more-button { background: transparent; border: 1px solid rgba(0,0,0,0.06); padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight:600 }
+.more-list { display: none; position: absolute; right: 0; top: 46px; background: #fff; border-radius: 8px; padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); min-width: 180px; z-index:1100; flex-direction: column; gap:8px }
+.more-list a { display: block; padding: 8px 10px; color: var(--wame-dark); text-decoration: none; border-radius:6px }
+.more-list a:hover { background: rgba(165,191,19,0.06) }
+.more-list.open { display: flex }
+
+/* ensure mobile dropdown is inline inside the opened menu */
+@media (max-width: 767px) {
+  .more-list { position: static; box-shadow: none; padding: 6px 0; background: transparent; min-width: auto }
+  .more-button { border: none; padding: 8px 6px }
+}
+
+/* ==================================================================
    TABLET STYLES (768px - 1024px)
    ================================================================== */
 @media (min-width: 768px) {
