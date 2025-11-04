@@ -69,7 +69,7 @@ export default function LandingPage() {
           <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
             {/* Volunteer - Blue section (top, exactly 120 degrees) */}
             <g
-              onClick={() => router.push('/volunteer')}
+              onClick={() => router.push('/volunteer/login')}
               onMouseEnter={() => setHoveredSection('volunteer')}
               onMouseLeave={() => setHoveredSection(null)}
               style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
