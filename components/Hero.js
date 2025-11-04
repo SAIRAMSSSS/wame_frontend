@@ -1,54 +1,27 @@
-export default function Hero({ title, subtitle, ctaText, ctaHref = '#' }) {
+import Link from 'next/link'
+
+export default function Hero({
+  title = 'Y-Ultimate',
+  subtitle = 'Empowering underprivileged children through Ultimate Frisbee',
+  ctaPrimary = { text: 'Get Involved', href: '/get-involved' },
+  ctaSecondary = { text: 'Donate', href: '/donate' }
+}) {
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 720 : false
+
   return (
-    <section
-      style={{
-        background: 'linear-gradient(135deg, var(--wame-dark) 0%, var(--wame-teal) 100%)',
-        color: '#fff',
-        padding: '4rem 2rem',
-        textAlign: 'center',
-        fontFamily: 'Poppins, sans-serif',
-      }}
-    >
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 48,
-            fontWeight: 700,
-            lineHeight: 1.2,
-            color: 'var(--wame-accent)',
-          }}
-        >
-          {title}
-        </h1>
-        <p
-          style={{
-            margin: '1rem 0 2rem',
-            fontSize: 18,
-            lineHeight: 1.6,
-            color: 'rgba(255,255,255,0.9)',
-            fontFamily: 'Inter, sans-serif',
-          }}
-        >
-          {subtitle}
-        </p>
-        {ctaText && (
-          <a
-            href={ctaHref}
-            style={{
-              display: 'inline-block',
-              padding: '12px 24px',
-              background: 'var(--wame-accent)',
-              color: 'var(--wame-dark)',
-              borderRadius: 10,
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: 16,
-            }}
-          >
-            {ctaText}
-          </a>
-        )}
+    <section className="hero" style={{ padding: isMobile ? '3rem 1rem' : '6rem 1rem', position: 'relative' }}>
+      <div style={{ textAlign: 'center', color: '#fff', zIndex: 10 }}>
+        <img src="/yultimate-logo.png" alt="Y-Ultimate" style={{ width: isMobile ? 90 : 140, height: isMobile ? 90 : 140, marginBottom: 20, filter: 'drop-shadow(2px 4px 12px rgba(0,0,0,0.6))' }} />
+        <h1 style={{ fontSize: isMobile ? 32 : 52, fontWeight: 700, fontFamily: 'Poppins, sans-serif', marginBottom: 12 }}>{title}</h1>
+        <p style={{ fontSize: isMobile ? 14 : 18, color: 'rgba(255,255,255,0.95)', marginBottom: 24 }}>{subtitle}</p>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+          <Link href={ctaPrimary.href}>
+            <button className="accent-button">{ctaPrimary.text}</button>
+          </Link>
+          <Link href={ctaSecondary.href}>
+            <button className="teal-button">{ctaSecondary.text}</button>
+          </Link>
+        </div>
       </div>
     </section>
   )

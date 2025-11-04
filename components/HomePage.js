@@ -53,7 +53,7 @@ export default function HomePage() {
             >
               <path 
                 d="M 100,100 L 169.28,60 A 80,80 0 1,0 30.72,60 L 100,100 Z" 
-                fill="#62929E"
+                fill="#3c56cdff"
                 style={{
                   transform: hoveredSection === 'volunteer' ? 'scale(1.08)' : hoveredSection && hoveredSection !== 'volunteer' ? 'scale(0.96)' : 'scale(1)',
                   transformOrigin: '100px 100px',
