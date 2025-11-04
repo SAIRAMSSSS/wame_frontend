@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import SimpleLineChart from '../../components/SimpleLineChart';
 import ProfileEditModal from '../../components/ProfileEditModal';
+import Navigation from '../../components/Navigation';
 
 export default function StudentHome() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function StudentHome() {
   const [tournaments, setTournaments] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [spiritLeaderboard, setSpiritLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [googleFitConnected, setGoogleFitConnected] = useState(false);
   const [isGoogleOAuthUser, setIsGoogleOAuthUser] = useState(false); // Track if user logged in via Google OAuth
@@ -40,7 +42,7 @@ export default function StudentHome() {
       }
       
       // Clean up URL by removing query params
-      router.replace('/student/home', undefined, { shallow: true });
+      router.replace('/student/dashboard', undefined, { shallow: true });
     }
     
     // If no token at all, redirect to login
@@ -199,6 +201,17 @@ export default function StudentHome() {
       setTournaments(tournaments);
       setSchedule(schedule);
       setLeaderboard(leaderboard);
+
+      // Fetch spirit leaderboard from first available tournament
+      if (tournaments && tournaments.length > 0) {
+        const spiritRes = await fetch(`http://127.0.0.1:8000/api/tournaments/${tournaments[0].id}/spirit_rankings/`, {
+          headers: { 'Authorization': `Token ${token}` }
+        });
+        if (spiritRes.ok) {
+          const spiritData = await spiritRes.json();
+          setSpiritLeaderboard(spiritData);
+        }
+      }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -272,6 +285,13 @@ export default function StudentHome() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#f5f7fa' }}>
+      {/* Navigation Bar */}
+      <div style={{ background: '#fff', padding: '16px 32px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+          <Navigation />
+        </div>
+      </div>
+
       {/* Header */}
       <header style={{ background: '#fff', borderBottom: '1px solid #e0e0e0', padding: '16px 32px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -410,7 +430,8 @@ export default function StudentHome() {
                   {/* Menu Items */}
                   <div style={{ padding: '8px 0' }}>
                     <button
-                      onClick={() => {
+                      onMouseDown={(e) => {
+                        e.preventDefault();
                         setShowProfileDropdown(false);
                         setShowProfileModal(true);
                       }}
@@ -436,7 +457,10 @@ export default function StudentHome() {
                     </button>
 
                     <button
-                      onClick={handleLogout}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        handleLogout();
+                      }}
                       style={{
                         width: '100%',
                         padding: '12px 20px',
@@ -579,10 +603,15 @@ export default function StudentHome() {
             <div style={{ background: '#fff', borderRadius: 12, padding: 24, marginBottom: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--wame-dark)', fontFamily: 'Poppins, sans-serif' }}>
-                  Tournaments
+                  🏆 Tournaments
                 </h2>
-                <button style={{ padding: '6px 12px', fontSize: 13, fontWeight: 600, color: 'var(--wame-accent)', background: 'transparent', border: '1px solid var(--wame-accent)', borderRadius: 6, cursor: 'pointer' }}>
-                  View All
+                <button 
+                  onClick={() => router.push('/tournaments')}
+                  style={{ padding: '8px 16px', fontSize: 13, fontWeight: 600, color: '#fff', background: '#667eea', border: 'none', borderRadius: 8, cursor: 'pointer', transition: 'all 0.3s' }}
+                  onMouseEnter={(e) => e.target.style.background = '#5568d3'}
+                  onMouseLeave={(e) => e.target.style.background = '#667eea'}
+                >
+                  View All Tournaments →
                 </button>
               </div>
               <div style={{ display: 'grid', gap: 12 }}>
@@ -637,44 +666,75 @@ export default function StudentHome() {
             </div>
           </div>
 
-          {/* Right Column - Leaderboard */}
+          {/* Right Column - Spirit Score Leaderboard */}
           <div>
             <div style={{ background: '#fff', borderRadius: 12, padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.08)', position: 'sticky', top: 24 }}>
               <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--wame-dark)', fontFamily: 'Poppins, sans-serif', marginBottom: 16 }}>
-                Leaderboard
+                ⭐ Spirit Leaderboard
               </h2>
-              <p style={{ fontSize: 13, color: 'var(--wame-muted)', marginBottom: 20 }}>Top performers this month</p>
+              <p style={{ fontSize: 13, color: 'var(--wame-muted)', marginBottom: 20 }}>Top teams by Spirit of the Game</p>
               <div style={{ display: 'grid', gap: 12 }}>
-                {[
-                  { rank: 1, name: 'Rahul Sharma', points: 1250, badge: '🥇' },
-                  { rank: 2, name: 'Priya Singh', points: 1180, badge: '🥈' },
-                  { rank: 3, name: 'Amit Kumar', points: 1120, badge: '🥉' },
-                  { rank: 4, name: 'Sneha Patel', points: 1050 },
-                  { rank: 5, name: 'Vikas Reddy', points: 980 },
-                  { rank: 6, name: user?.first_name + ' ' + user?.last_name || 'You', points: 920, highlight: true },
-                ].map((player) => (
-                  <div 
-                    key={player.rank} 
-                    style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
-                      padding: 12, 
-                      background: player.highlight ? '#fffbeb' : '#f8f9fa', 
-                      borderRadius: 8,
-                      border: player.highlight ? '2px solid #A5BF13' : '1px solid #e0e0e0'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <span style={{ fontSize: 18, fontWeight: 700, color: '#666', minWidth: 24 }}>
-                        {player.badge || `#${player.rank}`}
-                      </span>
-                      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--wame-dark)' }}>{player.name}</span>
+                {spiritLeaderboard && spiritLeaderboard.length > 0 ? (
+                  spiritLeaderboard.slice(0, 5).map((team, index) => (
+                    <div 
+                      key={team.id} 
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: 12, 
+                        background: team.name === user?.team_name ? '#fffbeb' : '#f8f9fa', 
+                        borderRadius: 8,
+                        border: team.name === user?.team_name ? '2px solid #A5BF13' : '1px solid #e0e0e0'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <span style={{ fontSize: 18, fontWeight: 700, color: '#666', minWidth: 24 }}>
+                          {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                        </span>
+                        <div>
+                          <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--wame-dark)' }}>
+                            {team.name}
+                          </div>
+                          {team.city && (
+                            <div style={{ fontSize: 11, color: '#999' }}>{team.city}</div>
+                          )}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: 16, fontWeight: 700, color: '#A5BF13' }}>
+                          {team.average_spirit_score?.toFixed(1) || 'N/A'}
+                        </div>
+                        <div style={{ fontSize: 10, color: '#999' }}>spirit score</div>
+                      </div>
                     </div>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: '#A5BF13' }}>{player.points}</span>
+                  ))
+                ) : (
+                  <div style={{ textAlign: 'center', padding: 20, color: '#999' }}>
+                    <p style={{ fontSize: 14 }}>No spirit scores available yet</p>
                   </div>
-                ))}
+                )}
               </div>
+              {spiritLeaderboard && spiritLeaderboard.length > 5 && (
+                <button
+                  onClick={() => router.push('/tournaments')}
+                  style={{
+                    width: '100%',
+                    marginTop: 16,
+                    padding: '10px',
+                    background: 'transparent',
+                    border: '2px solid #A5BF13',
+                    borderRadius: 8,
+                    color: '#A5BF13',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, sans-serif'
+                  }}
+                >
+                  View Full Leaderboard →
+                </button>
+              )}
             </div>
           </div>
         </div>
