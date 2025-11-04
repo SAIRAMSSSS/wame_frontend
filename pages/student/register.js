@@ -4,8 +4,9 @@ import Link from 'next/link';
 
 export default function StudentRegister() {
   const router = useRouter();
-  const [showEmailRegister, setShowEmailRegister] = useState(false);
+  const [showEmailRegister, setShowEmailRegister] = useState(true); // Changed to true - show manual registration by default
   const [formData, setFormData] = useState({
+    username: '', // Added username field
     first_name: '',
     last_name: '',
     email: '',
@@ -31,10 +32,10 @@ export default function StudentRegister() {
       }
       // Show welcome message and redirect
       alert('Welcome to Y-Ultimate! Your Google Fit data has been synced.');
-      router.push('/student/home');
+      router.push('/student/dashboard');
     } else if (token) {
       localStorage.setItem('token', token);
-      router.push('/student/home');
+      router.push('/student/dashboard');
     }
   }, [router.query]);
 
@@ -96,7 +97,7 @@ export default function StudentRegister() {
         // Auto login after registration
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/student/home');
+        router.push('/student/dashboard');
       } else {
         setError(data.message || 'Registration failed. Please try again.');
       }
@@ -292,6 +293,25 @@ export default function StudentRegister() {
                   style={{ width: '100%', padding: '12px 16px', fontSize: 14, border: '1px solid #ddd', borderRadius: 8, fontFamily: 'Inter, sans-serif', outline: 'none' }}
                 />
               </div>
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--wame-dark)', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>
+                Username *
+                <span style={{ fontSize: 12, fontWeight: 400, color: '#666', marginLeft: 8 }}>(You'll use this to login)</span>
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                placeholder="e.g., john_smith, student_2024"
+                style={{ width: '100%', padding: '12px 16px', fontSize: 14, border: '1px solid #ddd', borderRadius: 8, fontFamily: 'Inter, sans-serif', outline: 'none' }}
+              />
+              <small style={{ fontSize: 12, color: '#666', marginTop: 4, display: 'block', fontFamily: 'Inter, sans-serif' }}>
+                Choose a unique username (letters, numbers, underscore only)
+              </small>
             </div>
 
             <div style={{ marginBottom: 24 }}>

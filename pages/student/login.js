@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 export default function StudentLogin() {
   const router = useRouter();
-  const [showEmailLogin, setShowEmailLogin] = useState(false);
+  const [showEmailLogin, setShowEmailLogin] = useState(true); // Changed to true - show email login by default
   const [formData, setFormData] = useState({
-    email: '',
+    username: '', // Changed from email to username
     password: ''
   });
   const [error, setError] = useState('');
@@ -22,7 +22,7 @@ export default function StudentLogin() {
       if (google_connected) {
         localStorage.setItem('googleFitConnected', 'true');
       }
-      router.push('/student/home');
+      router.push('/student/dashboard');
     }
     
     if (oauthError) {
@@ -72,7 +72,7 @@ export default function StudentLogin() {
         // Store token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/student/home');
+        router.push('/student/dashboard');
       } else {
         setError(data.message || 'Login failed. Please check your credentials.');
       }
@@ -259,15 +259,15 @@ export default function StudentLogin() {
               <form onSubmit={handleSubmit} style={{ animation: 'slideDown 0.3s ease' }}>
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--wame-dark)', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>
-                    Email Address
+                    Username or Email
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
                     required
-                    placeholder="student@example.com"
+                    placeholder="Enter your username (e.g., amit_mumbai)"
                     style={{ width: '100%', padding: '12px 16px', fontSize: 14, border: '1px solid #ddd', borderRadius: 8, fontFamily: 'Inter, sans-serif', outline: 'none', transition: 'border 0.3s' }}
                     onFocus={(e) => e.target.style.borderColor = 'var(--wame-accent)'}
                     onBlur={(e) => e.target.style.borderColor = '#ddd'}
